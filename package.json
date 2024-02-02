@@ -1,0 +1,12 @@
+{
+  "name": "chat-app",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "i-deps": "cd server && npm i && cd .. && cd client && npm i",
+    "app:serve": ""
+  },
+  "keywords": [],
+  "author": "yatoenough",
+  "license": "ISC"
+}
