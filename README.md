@@ -1,6 +1,7 @@
 ## Installation
 
 ```bash
+$ cd server
 $ npm run install
 ```
 
