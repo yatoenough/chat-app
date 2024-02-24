@@ -1,16 +1,12 @@
 ## Installation
 
 ```bash
-$ npm run install-deps
+$ npm run install
 ```
 
 ## Running the app
 
 ```bash
-## run server
-
-$ cd server
-
 # development
 $ npm run start
 
@@ -19,9 +15,4 @@ $ npm run start:dev
 
 # production mode
 $ npm run start:prod
-
-## run client
-$ cd client
-
-$ npm run dev
 ```
