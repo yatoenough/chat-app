@@ -7,6 +7,7 @@ import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { SignInDto } from './dto/sign-in.dto';
 import { CreateUserDto } from '../users/dto/create-user.dto';
+import { User } from '../users/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -22,12 +23,7 @@ export class AuthService {
     }
 
     const user = await this.usersService.create(dto);
-
-    const payload = {
-      sub: user.id,
-      username: user.username,
-      email: user.email,
-    };
+    const payload = this.createPayload(user);
 
     return {
       access_token: await this.jwtService.signAsync(payload),
@@ -39,15 +35,18 @@ export class AuthService {
     if (user?.password !== dto.password) {
       throw new UnauthorizedException();
     }
-
-    const payload = {
-      sub: user.id,
-      username: user.username,
-      email: user.email,
-    };
-
+    const payload = this.createPayload(user);
     return {
       access_token: await this.jwtService.signAsync(payload),
+    };
+  }
+
+  private createPayload(user: User) {
+    return {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      joined: false,
     };
   }
 }
