@@ -4,11 +4,14 @@ import { Message } from './entities/message.entity';
 import { Repository } from 'typeorm';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { User } from '../users/user.entity';
+import { JwtService } from '@nestjs/jwt';
+import { extractToken } from 'src/shared/functions/extractToken';
 
 @Injectable()
 export class MessagesService {
   constructor(
     @InjectRepository(Message) private readonly repo: Repository<Message>,
+    private readonly jwtService: JwtService,
   ) {}
 
   async create(user: User, dto: CreateMessageDto): Promise<Message> {
@@ -19,5 +22,14 @@ export class MessagesService {
 
   async findAll(): Promise<Message[]> {
     return await this.repo.find();
+  }
+
+  async verifyUserInToken(bearerToken: string): Promise<User> {
+    const token = extractToken(bearerToken);
+    const user: User = await this.jwtService.verifyAsync(token, {
+      secret: process.env.JWT_SECRET,
+    });
+
+    return user;
   }
 }
