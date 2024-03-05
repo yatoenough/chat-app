@@ -24,19 +24,20 @@ export class MessagesGateway {
     @MessageBody() createMessageDto: CreateMessageDto,
     @ConnectedSocket() client: Socket,
   ) {
-    const user = await this.messagesService.verifyUserInToken(
+    const user = await this.messagesService.verifyUser(
       client.handshake.headers.authorization,
     );
     const message = await this.messagesService.create(user, createMessageDto);
     this.server.emit('message', message);
-    return message;
   }
 
   @SubscribeMessage('join')
   async join(@ConnectedSocket() client: Socket) {
-    const user = await this.messagesService.verifyUserInToken(
+    const user = await this.messagesService.verifyUser(
       client.handshake.headers.authorization,
     );
+
+    client.emit('message', await this.messagesService.findAll());
     this.server.emit('message', `${user.username} joined the chat`);
   }
 }

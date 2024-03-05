@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { User } from '../users/user.entity';
 import { JwtService } from '@nestjs/jwt';
-import { extractToken } from 'src/shared/functions/extractToken';
+import { extractToken } from '../../shared/functions/extractToken';
 
 @Injectable()
 export class MessagesService {
@@ -24,12 +24,11 @@ export class MessagesService {
     return await this.repo.find();
   }
 
-  async verifyUserInToken(bearerToken: string): Promise<User> {
-    const token = extractToken(bearerToken);
+  async verifyUser(bearerToken: string): Promise<User> {
+    const token = bearerToken.split(' ')[1];
     const user: User = await this.jwtService.verifyAsync(token, {
       secret: process.env.JWT_SECRET,
     });
-
     return user;
   }
 }

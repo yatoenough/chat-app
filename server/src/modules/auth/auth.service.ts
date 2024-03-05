@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  HttpException,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -46,7 +47,6 @@ export class AuthService {
       id: user.id,
       username: user.username,
       email: user.email,
-      joined: false,
     };
   }
 }
